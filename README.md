@@ -44,3 +44,51 @@ Documentation
 
 **Generate Module by clicking `Create Module`**
 ![Selection_019.png](https://bitbucket.org/repo/dx7zRM/images/2767703413-Selection_019.png)
+
+
+```
+#!python
+
+from openerp.osv import osv, fields
+
+class demo_demo(osv.osv):
+    _name = 'demo.demo'
+
+    _columns = {
+        'name': fields.char(size=64, string='Name', required=True, ),
+        'state': fields.selection([('draft','Draft'), ('open','Open'), ('done','Done')], string='Status',  ),
+    }
+    def act_open(self, cr, uid, ids, conext=None):
+        return self.write(cr, uid, ids, {'state': 'open'})
+    def act_done(self, cr, uid, ids, conext=None):
+        return self.write(cr, uid, ids, {'state': 'done'})
+
+
+demo_demo()
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+```
+
+
+```
+#!xml
+
+        <record id="view_demo_demo_form" model="ir.ui.view">
+            <field name="name">demo.demo.form</field>
+            <field name="model">demo.demo</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Demo Demo" version="7.0">
+                    <header>
+                        <button string="Open" name="act_open" states="draft" type="object"/>
+                        <button string="Done" name="act_done" states="open" type="object"/>
+                    </header>
+                    <sheet>
+                        <group>
+                        <field name="name"/>
+                        <field name="state"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+```
