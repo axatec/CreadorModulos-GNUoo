@@ -76,6 +76,8 @@ class OpenERPTemplate(object):
 
         for object_data in self.OpenERPData['object_datas']:
             self.py_file(module_path, object_data)
+            self.init_file(os.path.join(module_path, object_data['sub_folder']),
+                [object_data['name'].replace('.', '_')])
             self.xml_file(module_path, object_data)
         self.security_file(module_path, self.OpenERPData)
         return module_path
@@ -87,7 +89,7 @@ class OpenERPTemplate(object):
                                  file_path)
         sec_data = security_temp.render(object=object_list)
         write_file(file_path, sec_data)
-                  
+
     def xml_file(self, module_path, object_data):
         view_temp = Template(filename=os.path.join(
             self.template_path, 'view_template.mako'))
@@ -97,7 +99,6 @@ class OpenERPTemplate(object):
                                  file_path)
         view_data = view_temp.render(object=object_data,
                                      company=self.company_data)
-                                     
         write_file(file_path, view_data)
 
     def py_file(self, module_path, object_data):
@@ -276,7 +277,7 @@ if __name__ == '__main__':
                             'basic_file': ['test.py'],
                             'object_datas': object_datas},
                            {'name': 'Ruchir Shukla', 'short_name': 'Ruchir',
-                            'website': 'http://ruchir-shukla.blogspot.in/'})
+                            'website': 'http://www.bizzappdev.com/'})
 
     oerp.create_module("/home/ruchir/")
 
